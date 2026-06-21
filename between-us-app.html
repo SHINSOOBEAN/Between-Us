@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"/>
+<title>Between Us</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --p:#6366F1;--pl:#EEF2FF;--pd:#4F46E5;--g:#10B981;--y:#F59E0B;--r:#EF4444;
+  --bg:#FAFAFA;--w:#fff;--t:#1a1a2e;--m:#6b7280;--b:#e5e7eb;--rr:12px;--rs:8px;
+}
+body,html{font-family:'Noto Sans KR',sans-serif;background:#f0f0f0;display:flex;justify-content:center;min-height:100vh}
+#app-shell{width:100%;max-width:390px;background:var(--bg);min-height:100vh;position:relative;overflow-x:hidden;box-shadow:0 0 40px rgba(0,0,0,.1)}
+
+/* AUTH */
+.auth{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:28px 20px 36px;background:var(--bg)}
+.logo{text-align:center;margin-bottom:24px}
+.logo-icon{width:58px;height:58px;background:var(--pl);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:26px}
+.logo-title{font-size:22px;font-weight:700;color:var(--p)}
+.logo-sub{font-size:13px;color:var(--m);margin-top:4px}
+.card{background:var(--w);border-radius:var(--rr);border:1px solid var(--b);padding:22px 18px}
+.card-title{font-size:16px;font-weight:700;color:var(--t);margin-bottom:3px}
+.card-sub{font-size:12px;color:var(--m);margin-bottom:16px}
+.field{margin-bottom:12px}
+.lbl{font-size:11px;font-weight:700;color:var(--m);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:.4px}
+input[type=text],input[type=email],input[type=password],input[type=date],input[type=time],textarea,select{
+  width:100%;padding:11px 13px;border:1.5px solid var(--b);border-radius:var(--rs);font-size:14px;
+  color:var(--t);background:var(--w);outline:none;font-family:inherit;transition:border-color .15s}
+input:focus,textarea:focus,select:focus{border-color:var(--p)}
+input.err{border-color:var(--r)}
+.errmsg{font-size:11px;color:var(--r);margin-top:4px;display:none}
+.errmsg.show{display:block}
+.pw-wrap{position:relative}
+.pw-wrap input{padding-right:42px}
+.pw-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:15px;color:var(--m);cursor:pointer}
+.btn{width:100%;padding:13px;background:var(--p);color:#fff;border:none;border-radius:var(--rs);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s;margin-top:4px}
+.btn:hover{background:var(--pd)}
+.btn.sec{background:var(--w);color:var(--t);border:1.5px solid var(--b)}
+.divider{display:flex;align-items:center;gap:10px;margin:12px 0;color:var(--m);font-size:12px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--b)}
+.auth-foot{text-align:center;margin-top:14px;font-size:13px;color:var(--m)}
+.lnk{color:var(--p);font-weight:600;cursor:pointer}
+.forgot{text-align:right;margin-top:-6px;margin-bottom:12px;font-size:12px}
+.pw-bars{display:flex;gap:4px;margin-top:5px}
+.pw-bar{flex:1;height:3px;border-radius:2px;background:var(--b)}
+.pw-bar.weak{background:var(--r)}.pw-bar.fair{background:var(--y)}.pw-bar.strong{background:var(--g)}
+.pw-lbl{font-size:11px;margin-top:3px}
+.otp-row{display:flex;gap:7px;justify-content:center;margin:14px 0}
+.otp-box{width:42px;height:50px;border:1.5px solid var(--b);border-radius:var(--rs);font-size:20px;font-weight:700;text-align:center;font-family:inherit;color:var(--t);outline:none;padding:0}
+.otp-box:focus{border-color:var(--p)}
+
+/* MAIN */
+.main{display:flex;flex-direction:column;height:100vh;background:var(--bg)}
+.header{background:var(--w);padding:13px 16px 11px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b);flex-shrink:0}
+.header-title{font-size:17px;font-weight:700;color:var(--p)}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.av-sm{width:34px;height:34px;border-radius:50%;background:var(--pl);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--p);flex-shrink:0}
+.ch-btn{font-size:12px;color:var(--p);background:none;border:1px solid var(--p);padding:4px 9px;border-radius:6px;font-weight:500;cursor:pointer;font-family:inherit}
+.tab-body{flex:1;overflow-y:auto;padding-bottom:72px}
+.bot-nav{background:var(--w);border-top:1px solid var(--b);display:flex;padding:7px 0 16px;flex-shrink:0}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0;background:none;border:none;cursor:pointer;font-family:inherit}
+.nav-icon{font-size:19px}
+.nav-lbl{font-size:10px;color:var(--m);font-weight:500}
+.nav-btn.active .nav-lbl{color:var(--p);font-weight:700}
+
+/* HOME */
+.status-card{background:var(--w);margin:11px 14px;border-radius:var(--rr);padding:13px 14px;border:1px solid var(--b)}
+.status-lbl{font-size:11px;color:var(--m);font-weight:500;margin-bottom:6px}
+.s-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:20px;font-size:13px;font-weight:500}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block}
+.sec{margin:0 14px 11px}
+.sec-title{font-size:11px;font-weight:700;color:var(--m);margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px}
+.free-banner{background:var(--pl);border-radius:var(--rr);padding:11px 13px;border:1px solid #C7D2FE}
+.free-top{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.free-title{font-size:13px;font-weight:700;color:var(--p)}
+.chip{background:var(--w);border:1px solid #C7D2FE;border-radius:20px;padding:3px 9px;font-size:12px;color:var(--p);font-weight:500;display:inline-block;margin:2px 3px 2px 0}
+.chip.now{background:var(--p);color:#fff;border-color:var(--p)}
+.friends-list{display:flex;flex-direction:column;gap:7px}
+.friend-item{background:var(--w);border-radius:var(--rs);padding:11px 13px;display:flex;align-items:center;gap:9px;border:1px solid var(--b)}
+.friend-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.friend-info{flex:1;min-width:0}
+.friend-name{font-size:13px;font-weight:600;color:var(--t)}
+.friend-msg{font-size:12px;color:var(--m);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.friend-tag{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:500;padding:3px 7px;border-radius:10px;flex-shrink:0}
+.nudge{background:none;border:none;font-size:18px;cursor:pointer;padding:2px;transition:transform .15s}
+.nudge:hover{transform:scale(1.2)}
+
+/* FEED */
+.feed-list{display:flex;flex-direction:column;gap:9px;padding:12px 14px}
+.feed-item{background:var(--w);border-radius:var(--rr);overflow:hidden;border:1px solid var(--b)}
+.feed-hdr{padding:11px 13px 7px;display:flex;align-items:center;gap:8px}
+.feed-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.feed-name{font-size:13px;font-weight:600;color:var(--t)}
+.feed-time{font-size:11px;color:var(--m)}
+.feed-hdr-right{margin-left:auto;display:flex;gap:6px}
+.mini-btn{font-size:11px;color:var(--m);background:none;border:1px solid var(--b);padding:3px 7px;border-radius:5px;cursor:pointer;font-family:inherit}
+.mini-btn.del{color:var(--r);border-color:var(--r)}
+.feed-img{width:100%;max-height:220px;object-fit:cover;display:block}
+.feed-img-ph{width:100%;height:150px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:40px}
+.feed-text{padding:9px 13px;font-size:13px;line-height:1.55;color:var(--t)}
+.feed-actions{padding:7px 13px;display:flex;gap:10px;border-top:1px solid var(--b)}
+.react-btn{display:flex;align-items:center;gap:3px;background:none;border:none;font-size:12px;color:var(--m);padding:4px 8px;border-radius:6px;cursor:pointer;font-family:inherit}
+.react-btn:hover,.react-btn.active{background:var(--pl);color:var(--p);font-weight:600}
+.comments{border-top:1px solid var(--b);padding:8px 13px;background:#fafafa}
+.comment{display:flex;gap:7px;margin-bottom:6px;align-items:flex-start}
+.c-nick{font-size:12px;font-weight:700;color:var(--t);flex-shrink:0}
+.c-text{font-size:12px;color:var(--t);line-height:1.4;flex:1}
+.c-del{background:none;border:none;font-size:11px;color:var(--r);cursor:pointer;flex-shrink:0;padding:1px 4px}
+.c-input-row{display:flex;gap:7px;margin-top:6px}
+.c-input{flex:1;padding:7px 10px;border:1.5px solid var(--b);border-radius:20px;font-size:13px;font-family:inherit;color:var(--t);outline:none;background:var(--w)}
+.c-input:focus{border-color:var(--p)}
+.c-send{background:var(--p);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;flex-shrink:0}
+.fab{position:fixed;bottom:82px;right:calc(50% - 195px + 14px);width:48px;height:48px;background:var(--p);border-radius:50%;border:none;font-size:22px;color:#fff;cursor:pointer;box-shadow:0 3px 12px rgba(99,102,241,.35);z-index:20;display:flex;align-items:center;justify-content:center}
+
+/* CALENDAR */
+.cal-wrap{padding:14px}
+.cal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cal-month{font-size:15px;font-weight:700;color:var(--t)}
+.cal-nav{background:none;border:1px solid var(--b);border-radius:7px;width:30px;height:30px;font-size:14px;color:var(--m);cursor:pointer}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-day-lbl{text-align:center;font-size:11px;font-weight:700;color:var(--m);padding:5px 0}
+.cal-day{aspect-ratio:1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;position:relative;color:var(--t)}
+.cal-day.today{background:var(--p);color:#fff;font-weight:700}
+.cal-day.has-slot{color:var(--g);font-weight:600}
+.cal-day.has-slot::after{content:'';width:4px;height:4px;border-radius:50%;background:var(--g);position:absolute;bottom:3px;left:50%;transform:translateX(-50%)}
+.cal-day.other{color:#d1d5db}
+.cal-legend{display:flex;gap:14px;margin-top:10px}
+.cal-legend-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--m)}
+.cal-legend-dot{width:7px;height:7px;border-radius:50%}
+.slots{margin-top:14px}
+.slot-item{background:var(--w);border-radius:var(--rs);padding:10px 13px;margin-bottom:7px;border:1px solid var(--b);display:flex;align-items:center;gap:9px}
+.slot-time{font-size:13px;font-weight:600;color:var(--g)}
+.slot-sub{font-size:11px;color:var(--m);margin-top:2px}
+.match-badge{font-size:11px;background:#ECFDF5;color:#065F46;padding:3px 7px;border-radius:7px;font-weight:600;flex-shrink:0}
+.slot-del{background:none;border:none;font-size:16px;cursor:pointer;color:var(--m);flex-shrink:0;padding:2px 4px;border-radius:4px}
+.slot-del:hover{color:var(--r);background:#FEF2F2}
+.add-slot-btn{width:100%;padding:13px;background:var(--p);color:#fff;border:none;border-radius:var(--rs);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px}
+
+/* SETTINGS */
+.settings{padding:14px}
+.profile-card{background:var(--w);border-radius:var(--rr);border:1px solid var(--b);padding:20px;text-align:center;margin-bottom:12px}
+.profile-av{width:68px;height:68px;border-radius:50%;background:var(--pl);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--p);margin:0 auto 10px}
+.profile-name{font-size:16px;font-weight:700;color:var(--t)}
+.profile-email{font-size:13px;color:var(--m);margin-top:3px}
+.s-group{background:var(--w);border-radius:var(--rr);border:1px solid var(--b);overflow:hidden;margin-bottom:10px}
+.s-row{padding:13px 15px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b)}
+.s-row:last-child{border-bottom:none}
+.s-row-lbl{font-size:14px;font-weight:500;color:var(--t)}
+.s-row-val{font-size:13px;color:var(--m)}
+.s-lnk{font-size:13px;color:var(--p);font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit}
+.s-sec-title{font-size:11px;font-weight:700;color:var(--m);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.toggle{width:40px;height:22px;border-radius:11px;position:relative;border:none;cursor:pointer;transition:background .2s;flex-shrink:0}
+.toggle::after{content:'';width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:2px;transition:left .2s}
+.toggle.off{background:#d1d5db}.toggle.off::after{left:2px}
+.toggle.on{background:var(--p)}.toggle.on::after{left:20px}
+.logout-btn{width:100%;padding:13px;background:#fff;color:var(--r);border:1.5px solid var(--r);border-radius:var(--rs);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px}
+.logout-btn:hover{background:#FEF2F2}
+.group-badge{font-size:11px;background:var(--pl);color:var(--p);padding:3px 8px;border-radius:8px;font-weight:600}
+.group-join-row{display:flex;gap:8px;margin-top:8px}
+.group-join-input{flex:1;padding:9px 12px;border:1.5px solid var(--b);border-radius:var(--rs);font-size:13px;color:var(--t);font-family:inherit;outline:none}
+.group-join-input:focus{border-color:var(--p)}
+.group-join-btn{padding:9px 14px;background:var(--p);color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+
+/* MODALS */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity .22s}
+.overlay.show{opacity:1;pointer-events:all}
+.modal{background:var(--w);border-radius:18px 18px 0 0;padding:22px 18px 40px;width:100%;max-width:390px;transform:translateY(100%);transition:transform .28s ease;position:relative;max-height:90vh;overflow-y:auto}
+.overlay.show .modal{transform:translateY(0)}
+.overlay.center{align-items:center}
+.overlay.center .modal{border-radius:16px;max-width:340px;transform:none}
+.modal-title{font-size:15px;font-weight:700;margin-bottom:14px;text-align:center;color:var(--t)}
+.modal-close{position:absolute;top:14px;right:14px;background:none;border:none;font-size:18px;color:var(--m);cursor:pointer}
+.s-opt{padding:13px 14px;border-radius:var(--rs);border:1.5px solid var(--b);display:flex;align-items:center;gap:9px;background:none;width:100%;text-align:left;margin-bottom:7px;cursor:pointer;font-family:inherit;transition:all .2s}
+.s-opt:hover,.s-opt.sel{border-color:var(--p);background:var(--pl)}
+.s-opt-lbl{font-size:13px;font-weight:600;color:var(--t)}
+.s-opt-desc{font-size:11px;color:var(--m);margin-top:1px}
+.post-area{width:100%;min-height:90px;border:1.5px solid var(--b);border-radius:var(--rs);font-size:14px;padding:11px 13px;resize:none;outline:none;color:var(--t);font-family:inherit}
+.post-area:focus{border-color:var(--p)}
+.post-btn{width:100%;padding:13px;background:var(--p);color:#fff;border:none;border-radius:var(--rs);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:12px}
+.emoji-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.emoji-pick{width:38px;height:38px;border-radius:8px;font-size:20px;cursor:pointer;border:2px solid var(--b);background:var(--w)}
+.emoji-pick.sel{border-color:var(--p);background:var(--pl)}
+.file-upload-area{margin-top:10px;border:1.5px dashed var(--b);border-radius:var(--rs);padding:14px;text-align:center;cursor:pointer;position:relative;background:var(--bg)}
+.file-upload-area:hover{border-color:var(--p);background:var(--pl)}
+.file-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.file-upload-label{font-size:13px;color:var(--m);pointer-events:none}
+.img-preview{width:100%;max-height:160px;object-fit:cover;border-radius:var(--rs);margin-top:10px;display:none}
+.pw-icon{font-size:36px;text-align:center;margin-bottom:10px}
+.pw-title{font-size:16px;font-weight:700;text-align:center;color:var(--t);margin-bottom:6px}
+.pw-desc{font-size:13px;color:var(--m);text-align:center;line-height:1.55;margin-bottom:16px}
+.pw-cta{width:100%;padding:13px;background:linear-gradient(135deg,#6366F1,#8B5CF6);color:#fff;border:none;border-radius:var(--rs);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:8px}
+.pw-cancel{width:100%;padding:11px;background:none;color:var(--m);border:1px solid var(--b);border-radius:var(--rs);font-size:14px;cursor:pointer;font-family:inherit}
+.time-row{display:flex;gap:8px}
+.time-row .field{flex:1}
+.m-input{width:100%;padding:11px 13px;border:1.5px solid var(--b);border-radius:var(--rs);font-size:14px;color:var(--t);outline:none;background:var(--w);font-family:inherit}
+.m-input:focus{border-color:var(--p)}
+.m-btn{width:100%;padding:13px;background:var(--p);color:#fff;border:none;border-radius:var(--rs);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:12px}
+.code-box{background:var(--bg);border:1.5px dashed var(--b);border-radius:var(--rs);padding:14px;text-align:center;font-size:18px;font-weight:700;letter-spacing:3px;color:var(--p);margin:12px 0}
+.invite-desc{font-size:13px;color:var(--m);text-align:center;line-height:1.55;margin-bottom:10px}
+
+/* TOAST / NOTIF */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-20px);background:#1a1a2e;color:#fff;padding:9px 16px;border-radius:20px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transition:all .28s;pointer-events:none;max-width:calc(100% - 32px);text-align:center;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.notif-bar{position:fixed;top:0;left:50%;transform:translateX(-50%) translateY(-100%);width:100%;max-width:390px;background:var(--p);color:#fff;padding:12px 16px;font-size:13px;font-weight:500;z-index:8888;transition:transform .3s ease;display:flex;align-items:center;gap:8px}
+.notif-bar.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div id="app-shell"></div>
+<div class="toast" id="toast"></div>
+<div class="notif-bar" id="notif-bar"><span style="font-size:18px">👋</span><span id="notif-text"></span></div>
+
+<script>
+const PRI='#6366F1',PLI='#EEF2FF',ACT='#10B981',RST='#F59E0B',DNG='#EF4444';
+
+const STATUS={
+  active:{label:'함께 있고 싶어요 😊',dot:ACT,bg:'#ECFDF5',color:'#065F46',tag:'Free',desc:'만남 가능 신호 발신'},
+  rest:{label:'혼자만의 시간이 필요해요 ☕',dot:RST,bg:'#FFF7ED',color:'#92400E',tag:'Rest',desc:'조용히 나만의 시간'},
+  busy:{label:'바빠요 😓',dot:DNG,bg:'#FEF3C7',color:'#92400E',tag:'Busy',desc:'지금은 연락이 어려워요'},
+};
+
+// ── Global State ──────────────────────────────────────────────────────────────
+const S={
+  view:'login',
+  user:null,
+  pendingEmail:'',pendingNick:'',
+  tab:'home',
+  status:'rest',
+  friends:[
+    {id:'f1',nick:'수빈',name:'김수빈',bg:PLI,color:PRI,status:'active',freeSlots:[{s:'14:00',e:'16:00'},{s:'19:00',e:'21:00'}]},
+    {id:'f2',nick:'진',name:'박진호',bg:'#FFF7ED',color:'#92400E',status:'busy',freeSlots:[{s:'10:00',e:'12:00'},{s:'20:00',e:'22:00'}]},
+    {id:'f3',nick:'미래',name:'최미래',bg:'#F5F3FF',color:'#6D28D9',status:'rest',freeSlots:[{s:'19:00',e:'21:00'},{s:'15:00',e:'17:00'}]},
+  ],
+  posts:[
+    {id:'p1',nick:'수빈',ab:PLI,ac:PRI,content:'어제 한강 너무 좋았다.. 다음엔 같이 가자!',imgSrc:null,emoji:'🌅',hasImg:true,likes:3,liked:false,comments:[{id:'c0',nick:'나',text:'나도 가고 싶었는데 😭'}],ts:Date.now()-86400000,showComments:false,isOwn:false},
+    {id:'p2',nick:'미래',ab:'#F5F3FF',ac:'#6D28D9',content:'오늘 날씨 진짜 좋다 😍 점심 먹으러 나가고 싶은데 같이 갈 사람?',imgSrc:null,emoji:'',hasImg:false,likes:0,liked:false,comments:[],ts:Date.now()-10800000,showComments:false,isOwn:false},
+    {id:'p3',nick:'진',ab:'#ECFDF5',ac:'#065F46',content:'오랜만에 라면 끓여먹었는데 생각보다 맛있었음ㅋㅋ 다음에 같이 먹자',imgSrc:null,emoji:'🍜',hasImg:true,likes:5,liked:false,comments:[],ts:Date.now()-172800000,showComments:false,isOwn:false},
+  ],
+  slots:[{id:'s1',date:todayStr(),start:'14:00',end:'16:00'}],
+  notifs:{nudge:true,feed:true,status:false},
+  calYear:new Date().getFullYear(),calMonth:new Date().getMonth(),
+  openModal:null,
+  postEmoji:'',
+  pendingImgSrc:null,
+  editingPostId:null,
+  groups:[{id:'g1',name:'친구들 모임 #1',active:true}],
+};
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function todayStr(){return new Date().toISOString().slice(0,10);}
+function tms(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
+function fmtDate(s){
+  const d=new Date(s+'T00:00:00'),t=new Date();t.setHours(0,0,0,0);
+  const df=Math.round((d-t)/86400000);
+  if(df===0)return'오늘';if(df===1)return'내일';if(df===2)return'모레';
+  return`${d.getMonth()+1}/${d.getDate()}`;
+}
+function ago(ts){
+  const s=Math.floor((Date.now()-ts)/1000);
+  if(s<60)return'방금 전';if(s<3600)return`${Math.floor(s/60)}분 전`;
+  if(s<86400)return`${Math.floor(s/3600)}시간 전`;return`${Math.floor(s/86400)}일 전`;
+}
+function matchFriends(slot){
+  const sA=tms(slot.start),eA=tms(slot.end);
+  return S.friends.filter(f=>f.freeSlots.some(fs=>tms(fs.s)<eA&&tms(fs.e)>sA)).map(f=>f.nick);
+}
+function uid(){return Math.random().toString(36).slice(2);}
+
+// ── Toast / Notif ─────────────────────────────────────────────────────────────
+let toastT,notifT;
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2400);
+}
+function notif(msg){
+  document.getElementById('notif-text').textContent=msg;
+  const el=document.getElementById('notif-bar');el.classList.add('show');
+  clearTimeout(notifT);notifT=setTimeout(()=>el.classList.remove('show'),3200);
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function render(){
+  document.getElementById('app-shell').innerHTML=buildApp();
+  attach();
+}
+
+function buildApp(){
+  if(S.view==='login')   return buildLogin();
+  if(S.view==='signup')  return buildSignup();
+  if(S.view==='verify')  return buildVerify();
+  if(S.view==='forgot')  return buildForgot();
+  if(S.view==='app')     return buildMain();
+  return '';
+}
+
+// ── AUTH SCREENS ──────────────────────────────────────────────────────────────
+function buildLogin(){return`<div class="auth">
+  <div class="logo"><div class="logo-icon">🤝</div><div class="logo-title">Between Us</div><div class="logo-sub">친구들과 함께하는 시간을 찾아요</div></div>
+  <div class="card">
+    <div class="card-title">로그인</div><div class="card-sub">이메일로 계속하기</div>
+    <div class="field"><label class="lbl">이메일</label><input id="l-email" type="email" placeholder="hello@example.com"/><div class="errmsg" id="l-ee">유효한 이메일을 입력해 주세요.</div></div>
+    <div class="field"><label class="lbl">비밀번호</label><div class="pw-wrap"><input id="l-pw" type="password" placeholder="비밀번호 입력"/><button class="pw-eye" id="l-eye">👁</button></div><div class="errmsg" id="l-pe">비밀번호를 입력해 주세요.</div></div>
+    <div class="forgot"><span class="lnk" id="go-forgot">비밀번호를 잊으셨나요?</span></div>
+    <button class="btn" id="do-login">로그인</button>
+    <div class="divider">또는</div>
+    <button class="btn sec" id="quick-login">🚀 빠른 체험 (A@example.com)</button>
+  </div>
+  <div class="auth-foot">계정이 없으신가요? <span class="lnk" id="go-signup">회원가입</span></div>
+</div>`;}
+
+function buildSignup(){return`<div class="auth">
+  <div class="logo"><div class="logo-icon">🤝</div><div class="logo-title">Between Us</div><div class="logo-sub">새 계정 만들기</div></div>
+  <div class="card">
+    <div class="card-title">회원가입</div><div class="card-sub">이메일로 시작하기</div>
+    <div class="field"><label class="lbl">닉네임</label><input id="s-nick" type="text" placeholder="친구들에게 보이는 이름" maxlength="16"/><div class="errmsg" id="s-ne">닉네임은 2자 이상이어야 해요.</div></div>
+    <div class="field"><label class="lbl">이메일</label><input id="s-email" type="email" placeholder="hello@example.com"/><div class="errmsg" id="s-ee">유효한 이메일을 입력해 주세요.</div></div>
+    <div class="field"><label class="lbl">비밀번호</label><div class="pw-wrap"><input id="s-pw" type="password" placeholder="8자 이상 입력"/><button class="pw-eye" id="s-eye">👁</button></div>
+      <div class="pw-bars"><div class="pw-bar" id="pb1"></div><div class="pw-bar" id="pb2"></div><div class="pw-bar" id="pb3"></div></div>
+      <div class="pw-lbl" id="pw-lbl"></div><div class="errmsg" id="s-pe">비밀번호는 8자 이상이어야 해요.</div></div>
+    <div class="field"><label class="lbl">비밀번호 확인</label><div class="pw-wrap"><input id="s-pw2" type="password" placeholder="비밀번호 재입력"/></div><div class="errmsg" id="s-p2e">비밀번호가 일치하지 않아요.</div></div>
+    <button class="btn" id="do-signup">가입하기</button>
+  </div>
+  <div class="auth-foot">이미 계정이 있으신가요? <span class="lnk" id="go-login">로그인</span></div>
+</div>`;}
+
+function buildVerify(){return`<div class="auth">
+  <div style="text-align:center;padding-top:20px">
+    <div style="width:60px;height:60px;background:#ECFDF5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:26px">📬</div>
+    <div style="font-size:17px;font-weight:700;margin-bottom:7px">이메일 인증</div>
+    <div style="font-size:13px;color:var(--m);line-height:1.6"><span style="font-weight:600;color:var(--t)">${S.pendingEmail}</span>으로<br/>인증 코드 6자리를 발송했어요.</div>
+  </div>
+  <div class="card" style="margin-top:22px">
+    <div class="otp-row">${[0,1,2,3,4,5].map(i=>`<input class="otp-box" id="otp${i}" maxlength="1" type="text" inputmode="numeric"/>`).join('')}</div>
+    <div class="errmsg" id="otp-err" style="text-align:center;margin-bottom:8px"></div>
+    <button class="btn" id="do-verify">인증하기</button>
+    <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--m)">코드를 받지 못하셨나요? <span class="lnk" id="resend">재발송</span></div>
+  </div>
+  <div class="auth-foot" style="margin-top:14px"><span class="lnk" id="go-login2">← 로그인으로 돌아가기</span></div>
+</div>`;}
+
+function buildForgot(){return`<div class="auth">
+  <div style="text-align:center;padding-top:20px">
+    <div style="width:60px;height:60px;background:var(--pl);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:26px">🔑</div>
+    <div style="font-size:17px;font-weight:700;margin-bottom:7px">비밀번호 재설정</div>
+    <div style="font-size:13px;color:var(--m);line-height:1.6">가입한 이메일을 입력하면<br/>재설정 링크를 보내드릴게요.</div>
+  </div>
+  <div class="card" style="margin-top:22px">
+    <div class="field"><label class="lbl">이메일</label><input id="f-email" type="email" placeholder="가입한 이메일 주소"/><div class="errmsg" id="f-err">유효한 이메일을 입력해 주세요.</div></div>
+    <button class="btn" id="do-forgot">재설정 링크 보내기</button>
+  </div>
+  <div class="auth-foot" style="margin-top:14px"><span class="lnk" id="go-login3">← 로그인으로 돌아가기</span></div>
+</div>`;}
+
+// ── MAIN APP ──────────────────────────────────────────────────────────────────
+function buildMain(){
+  return`<div class="main">${buildHeader()}<div class="tab-body">${buildTab()}</div>${buildNav()}</div>${buildModals()}`;
+}
+
+function buildHeader(){
+  const i=(S.user.nick||'?')[0].toUpperCase();
+  return`<div class="header">
+    <span class="header-title">Between Us</span>
+    <div class="hdr-right">
+      ${S.tab==='home'?'<button class="ch-btn" id="open-status-modal">상태 변경</button>':''}
+      <div class="av-sm">${i}</div>
+    </div>
+  </div>`;
+}
+
+function buildNav(){
+  return`<nav class="bot-nav">${[['home','🏠','홈'],['calendar','📅','캘린더'],['feed','📸','피드'],['settings','⚙️','설정']].map(([id,ic,lb])=>`
+    <button class="nav-btn${S.tab===id?' active':''}" data-tab="${id}"><span class="nav-icon">${ic}</span><span class="nav-lbl">${lb}</span></button>`).join('')}</nav>`;
+}
+
+function buildTab(){
+  if(S.tab==='home')     return buildHome();
+  if(S.tab==='calendar') return buildCalendar();
+  if(S.tab==='feed')     return buildFeed();
+  if(S.tab==='settings') return buildSettings();
+  return '';
+}
+
+// ── HOME TAB ──────────────────────────────────────────────────────────────────
+function buildHome(){
+  const cfg=STATUS[S.status];
+  const td=todayStr(),nowM=new Date().getHours()*60+new Date().getMinutes();
+  const todaySlots=S.slots.filter(s=>s.date===td);
+
+  const statusCard=`<div class="status-card">
+    <div class="status-lbl">내 상태</div>
+    <span class="s-badge" style="background:${cfg.bg};color:${cfg.color}"><span class="dot" style="background:${cfg.dot}"></span>${cfg.label}</span>
+  </div>`;
+
+  const freeSection=todaySlots.length===0?'':`<div class="sec">
+    <div class="sec-title">오늘 비는 시간</div>
+    <div class="free-banner">
+      <div class="free-top"><span style="font-size:15px">⚡</span><span class="free-title">오늘 만날 수 있어요!</span></div>
+      <div>${todaySlots.map(s=>{const n=tms(s.start)<=nowM&&tms(s.end)>nowM;return`<span class="chip${n?' now':''}">${n?'지금 ':''}${s.start}~${s.end}</span>`;}).join('')}</div>
+    </div>
+  </div>`;
+
+  const friends=`<div class="sec"><div class="sec-title">친구들 상태</div>
+    <div class="friends-list">${S.friends.map(f=>{const fc=STATUS[f.status]||STATUS.rest;return`
+      <div class="friend-item">
+        <div class="friend-av" style="background:${f.bg};color:${f.color}">${f.nick[0]}</div>
+        <div class="friend-info"><div class="friend-name">${f.name}</div><div class="friend-msg">${fc.label}</div></div>
+        <span class="friend-tag" style="background:${fc.bg};color:${fc.color}"><span class="dot" style="background:${fc.dot}"></span>${fc.tag}</span>
+        <button class="nudge" data-nudge="${f.name}">👋</button>
+      </div>`;}).join('')}</div></div>`;
+
+  const feedPrev=`<div class="sec"><div class="sec-title">최근 피드</div>
+    <div style="display:flex;flex-direction:column;gap:9px">${S.posts.slice(0,2).map(p=>buildFeedCard(p,true)).join('')}</div>
+  </div>`;
+
+  return statusCard+freeSection+friends+feedPrev;
+}
+
+// ── FEED TAB ──────────────────────────────────────────────────────────────────
+function buildFeed(){
+  return`<div style="position:relative">
+    <div class="feed-list">${S.posts.map(p=>buildFeedCard(p,false)).join('')}</div>
+    <button class="fab" id="open-post-modal">＋</button>
+  </div>`;
+}
+
+function buildFeedCard(p,preview){
+  const own=p.isOwn;
+  const ownBtns=own&&!preview?`<div class="feed-hdr-right">
+    <button class="mini-btn" data-edit-post="${p.id}">수정</button>
+    <button class="mini-btn del" data-del-post="${p.id}">삭제</button>
+  </div>`:'';
+
+  let media='';
+  if(p.imgSrc) media=`<img class="feed-img" src="${p.imgSrc}" alt="post image"/>`;
+  else if(p.hasImg&&p.emoji) media=`<div class="feed-img-ph">${p.emoji}</div>`;
+
+  const commentsHtml=p.showComments&&!preview?`<div class="comments">
+    ${p.comments.map(c=>`<div class="comment">
+      <span class="c-nick">${c.nick}</span>
+      <span class="c-text">${c.text}</span>
+      ${(c.nick===S.user.nick)?`<button class="c-del" data-del-comment="${p.id}|${c.id}">✕</button>`:''}
+    </div>`).join('')}
+    <div class="c-input-row">
+      <input class="c-input" id="ci-${p.id}" placeholder="댓글 달기..."/>
+      <button class="c-send" data-comment="${p.id}">↑</button>
+    </div>
+  </div>`:'';
+
+  return`<div class="feed-item" id="fi-${p.id}">
+    <div class="feed-hdr">
+      <div class="feed-av" style="background:${p.ab};color:${p.ac}">${p.nick[0]}</div>
+      <div><div class="feed-name">${p.nick}</div><div class="feed-time">${ago(p.ts)}</div></div>
+      ${ownBtns}
+    </div>
+    ${media}
+    <div class="feed-text">${p.content}</div>
+    <div class="feed-actions">
+      <button class="react-btn${p.liked?' active':''}" data-like="${p.id}">❤️ ${p.likes}</button>
+      ${!preview?`<button class="react-btn${p.showComments?' active':''}" data-toggle-comments="${p.id}">💬 ${p.comments.length}</button>`:'<button class="react-btn">💬 '+p.comments.length+'</button>'}
+    </div>
+    ${commentsHtml}
+  </div>`;
+}
+
+// ── CALENDAR TAB ──────────────────────────────────────────────────────────────
+function buildCalendar(){
+  const MNTHS=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  const td=todayStr(),sds=new Set(S.slots.map(s=>s.date));
+  const first=new Date(S.calYear,S.calMonth,1).getDay();
+  const total=new Date(S.calYear,S.calMonth+1,0).getDate();
+  const prev=new Date(S.calYear,S.calMonth,0).getDate();
+  let cells='';
+  for(let i=0;i<first;i++) cells+=`<div class="cal-day other">${prev-first+1+i}</div>`;
+  for(let d=1;d<=total;d++){
+    const ds=`${S.calYear}-${String(S.calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const cls=ds===td?'today':sds.has(ds)?'has-slot':'';
+    cells+=`<div class="cal-day${cls?' '+cls:''}">${d}</div>`;
+  }
+  const rem=(7-((first+total)%7))%7;
+  for(let i=1;i<=rem;i++) cells+=`<div class="cal-day other">${i}</div>`;
+
+  const slotsHtml=S.slots.length===0
+    ?'<div style="text-align:center;color:var(--m);font-size:13px;padding:20px 0">아직 비는 시간이 없어요<br/>아래 버튼으로 추가해 보세요!</div>'
+    :S.slots.map(s=>{
+      const m=matchFriends(s);
+      return`<div class="slot-item">
+        <span style="font-size:16px">⚡</span>
+        <div style="flex:1">
+          <div class="slot-time">${fmtDate(s.date)} ${s.start} – ${s.end}</div>
+          ${m.length?`<div class="slot-sub">${m.join(', ')}이랑 겹침!</div>`:''}
+        </div>
+        ${m.length?'<span class="match-badge">매칭</span>':''}
+        <button class="slot-del" data-del-slot="${s.id}" title="삭제">🗑</button>
+      </div>`;}).join('');
+
+  return`<div class="cal-wrap">
+    <div class="cal-hdr">
+      <button class="cal-nav" id="cal-prev">‹</button>
+      <span class="cal-month">${S.calYear}년 ${MNTHS[S.calMonth]}</span>
+      <button class="cal-nav" id="cal-next">›</button>
+    </div>
+    <div class="cal-grid">
+      ${['일','월','화','수','목','금','토'].map(d=>`<div class="cal-day-lbl">${d}</div>`).join('')}
+      ${cells}
+    </div>
+    <div class="cal-legend">
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--p)"></div>오늘</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--g)"></div>비는 시간</div>
+    </div>
+    <div class="slots"><div class="sec-title" style="margin-bottom:8px">나의 비는 시간</div>${slotsHtml}</div>
+    <button class="add-slot-btn" id="open-slot-modal">+ 비는 시간 추가하기</button>
+  </div>`;
+}
+
+// ── SETTINGS TAB ──────────────────────────────────────────────────────────────
+function buildSettings(){
+  const u=S.user;
+  const notifRows=[['nudge','찌르기 알림'],['feed','피드 알림'],['status','상태 변경 알림']];
+  return`<div class="settings">
+    <div class="profile-card">
+      <div class="profile-av">${(u.nick||'나')[0].toUpperCase()}</div>
+      <div class="profile-name">${u.nick}</div>
+      <div class="profile-email">${u.email}</div>
+    </div>
+
+    <div class="s-sec-title">그룹 관리</div>
+    <div class="s-group" style="padding:11px 13px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--t)">친구들 모임 #1</div>
+          <div style="font-size:11px;color:var(--m);margin-top:2px">멤버 ${S.friends.length+1}명</div>
+        </div>
+        <span class="group-badge">현재 그룹</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button class="ch-btn" style="flex:1" id="open-invite-modal">초대 링크</button>
+        <button class="ch-btn" style="flex:1" id="open-paywall">+ 그룹 추가</button>
+      </div>
+      <div style="font-size:12px;font-weight:600;color:var(--m);margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px">그룹 코드 입력</div>
+      <div class="group-join-row">
+        <input class="group-join-input" id="join-code-input" type="text" placeholder="BTW-2026-NEW"/>
+        <button class="group-join-btn" id="do-join-group">참여하기</button>
+      </div>
+    </div>
+
+    <div class="s-sec-title">알림 설정</div>
+    <div class="s-group">
+      ${notifRows.map(([k,lb])=>`
+        <div class="s-row">
+          <span class="s-row-lbl">${lb}</span>
+          <button class="toggle ${S.notifs[k]?'on':'off'}" data-toggle-notif="${k}"></button>
+        </div>`).join('')}
+    </div>
+
+    <div class="s-sec-title">계정</div>
+    <div class="s-group">
+      <div class="s-row"><span class="s-row-lbl">닉네임 변경</span><button class="s-lnk" id="open-nick-modal">변경</button></div>
+      <div class="s-row"><span class="s-row-lbl">비밀번호 변경</span><button class="s-lnk" id="pw-toast">변경</button></div>
+      <div class="s-row" style="border-bottom:none"><span class="s-row-lbl">버전</span><span class="s-row-val">1.0.0</span></div>
+    </div>
+
+    <button class="logout-btn" id="do-logout">로그아웃</button>
+  </div>`;
+}
+
+// ── MODALS ────────────────────────────────────────────────────────────────────
+function buildModals(){
+  const o=S.openModal;
+  const editing=S.editingPostId?S.posts.find(p=>p.id===S.editingPostId):null;
+
+  return`
+  <!-- Status -->
+  <div class="overlay${o==='status'?' show':''}" id="m-status">
+    <div class="modal">
+      <button class="modal-close" data-close>✕</button>
+      <div class="modal-title">내 상태 변경</div>
+      ${Object.entries(STATUS).map(([k,c])=>`
+        <button class="s-opt${S.status===k?' sel':''}" data-set-status="${k}">
+          <span class="dot" style="background:${c.dot}"></span>
+          <div><div class="s-opt-lbl">${c.label}</div><div class="s-opt-desc">${c.desc}</div></div>
+        </button>`).join('')}
+    </div>
+  </div>
+
+  <!-- Add Slot -->
+  <div class="overlay${o==='slot'?' show':''}" id="m-slot">
+    <div class="modal">
+      <button class="modal-close" data-close>✕</button>
+      <div class="modal-title">비는 시간 추가</div>
+      <div class="field"><label class="lbl">날짜</label><input id="sl-date" type="date" class="m-input" value="${todayStr()}" min="${todayStr()}"/></div>
+      <div class="time-row">
+        <div class="field"><label class="lbl">시작</label><input id="sl-start" type="time" class="m-input" value="14:00"/></div>
+        <div class="field"><label class="lbl">종료</label><input id="sl-end" type="time" class="m-input" value="16:00"/></div>
+      </div>
+      <button class="m-btn" id="do-add-slot">추가하기</button>
+    </div>
+  </div>
+
+  <!-- Post / Edit Post -->
+  <div class="overlay${o==='post'?' show':''}" id="m-post">
+    <div class="modal">
+      <button class="modal-close" data-close>✕</button>
+      <div class="modal-title">${editing?'게시글 수정':'새 추억 기록'}</div>
+      <textarea class="post-area" id="post-text" placeholder="오늘 있었던 일을 친구들과 공유해요...">${editing?editing.content:''}</textarea>
+      ${!editing?`
+      <div style="margin-top:10px">
+        <div class="lbl" style="margin-bottom:8px">이모지 선택 (선택)</div>
+        <div class="emoji-row">${['🌅','🍜','☕','🎵','🌸','🏃','📚','🎮','🍕','🌙'].map(e=>`<button class="emoji-pick${S.postEmoji===e?' sel':''}" data-emoji="${e}">${e}</button>`).join('')}</div>
+      </div>
+      <div class="file-upload-area" id="upload-area">
+        <input type="file" accept="image/*" id="img-file-input"/>
+        <div class="file-upload-label">📷 사진 추가하기 (클릭 또는 드래그)</div>
+      </div>
+      <img class="img-preview" id="img-preview" src="" alt="preview"/>
+      `:''}
+      <button class="post-btn" id="do-post">${editing?'수정 완료':'공유하기'}</button>
+    </div>
+  </div>
+
+  <!-- Nick -->
+  <div class="overlay center${o==='nick'?' show':''}" id="m-nick">
+    <div class="modal">
+      <button class="modal-close" data-close>✕</button>
+      <div class="modal-title">닉네임 변경</div>
+      <div class="field"><label class="lbl">새 닉네임</label><input id="nick-input" type="text" class="m-input" value="${S.user?S.user.nick:''}" maxlength="16"/></div>
+      <button class="m-btn" id="do-nick">저장하기</button>
+    </div>
+  </div>
+
+  <!-- Invite -->
+  <div class="overlay center${o==='invite'?' show':''}" id="m-invite">
+    <div class="modal">
+      <button class="modal-close" data-close>✕</button>
+      <div class="modal-title">친구 초대</div>
+      <div class="invite-desc">아래 그룹 코드를 친구에게 공유하거나<br/>친구의 코드를 입력해 초대하세요.</div>
+      <div class="code-box">BTW-2026-ABC</div>
+      <button class="btn" style="margin-top:0;margin-bottom:10px" id="copy-link">링크 복사</button>
+      <div class="divider">또는 코드 입력</div>
+      <div class="field"><label class="lbl">친구 코드</label><input id="invite-code" type="text" class="m-input" placeholder="BTW-2026-XXX"/></div>
+      <button class="m-btn" id="do-invite">초대하기</button>
+    </div>
+  </div>
+
+  <!-- Paywall -->
+  <div class="overlay center${o==='paywall'?' show':''}" id="m-paywall">
+    <div class="modal">
+      <button class="modal-close" data-close>✕</button>
+      <div style="padding:10px 0 0">
+        <div class="pw-icon">👑</div>
+        <div class="pw-title">프리미엄 기능</div>
+        <div class="pw-desc">그룹 추가는 프리미엄 기능입니다.<br/>여러 친구 그룹을 관리하려면<br/>Between Us 프리미엄을 구독해 주세요.</div>
+        <button class="pw-cta" id="do-premium">프리미엄 구독하기</button>
+        <button class="pw-cancel" data-close>나중에</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── Event Attachment ──────────────────────────────────────────────────────────
+function attach(){
+  const $=id=>document.getElementById(id);
+  const on=(id,ev,fn)=>{const el=$(id);if(el)el.addEventListener(ev,fn);};
+  const all=(sel,ev,fn)=>document.querySelectorAll(sel).forEach(el=>el.addEventListener(ev,fn));
+
+  function isEmail(e){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+
+  // ── LOGIN ──
+  on('do-login','click',()=>{
+    const email=$('l-email').value.trim(),pw=$('l-pw').value;
+    const eOk=isEmail(email),pOk=!!pw;
+    $('l-ee').classList.toggle('show',!eOk);
+    $('l-pe').classList.toggle('show',!pOk);
+    if(eOk&&pOk) doLogin(email);
+  });
+  on('quick-login','click',()=>doLogin('A@example.com'));
+  on('go-signup','click',()=>{S.view='signup';render();});
+  on('go-forgot','click',()=>{S.view='forgot';render();});
+  on('l-eye','click',()=>{const i=$('l-pw');i.type=i.type==='password'?'text':'password';$('l-eye').textContent=i.type==='password'?'👁':'🙈';});
+
+  // ── SIGNUP ──
+  on('do-signup','click',()=>{
+    const nick=$('s-nick').value.trim(),email=$('s-email').value.trim(),pw=$('s-pw').value,pw2=$('s-pw2').value;
+    const ne=nick.length<2,ee=!isEmail(email),pe=pw.length<8,p2e=pw!==pw2;
+    $('s-ne').classList.toggle('show',ne);$('s-ee').classList.toggle('show',ee);
+    $('s-pe').classList.toggle('show',pe);$('s-p2e').classList.toggle('show',p2e);
+    if(!ne&&!ee&&!pe&&!p2e){S.pendingNick=nick;S.pendingEmail=email;S.view='verify';render();}
+  });
+  on('go-login','click',()=>{S.view='login';render();});
+  on('s-eye','click',()=>{const i=$('s-pw');i.type=i.type==='password'?'text':'password';$('s-eye').textContent=i.type==='password'?'👁':'🙈';});
+  on('s-pw','input',function(){
+    let sc=0;const pw=this.value;
+    if(pw.length>=8)sc++;if(/[A-Z0-9]/.test(pw))sc++;if(/[^A-Za-z0-9]/.test(pw)||pw.length>=12)sc++;
+    const lv=Math.min(sc-1,2);const cls=['weak','fair','strong'][lv];
+    [1,2,3].forEach(i=>{const b=$('pb'+i);if(b){b.className='pw-bar';if(i<=sc)b.classList.add(cls);}});
+    const lb=$('pw-lbl');if(lb)lb.textContent=sc>0?`비밀번호 강도: ${['약함','보통','강함'][lv]}`:'' ;
+  });
+
+  // ── VERIFY ──
+  on('do-verify','click',()=>{
+    const code=[0,1,2,3,4,5].map(i=>($('otp'+i)||{value:''}).value).join('');
+    const err=$('otp-err');
+    if(code.length<6){err.textContent='코드 6자리를 모두 입력해 주세요.';err.classList.add('show');return;}
+    if(code==='000000'){err.textContent='코드가 올바르지 않아요.';err.classList.add('show');return;}
+    S.user={email:S.pendingEmail,nick:S.pendingNick};S.view='app';render();
+  });
+  on('go-login2','click',()=>{S.view='login';render();});
+  on('resend','click',()=>toast('코드를 재발송했어요! 📬'));
+  for(let i=0;i<6;i++){
+    on('otp'+i,'input',function(){this.value=this.value.replace(/\D/g,'');if(this.value&&i<5)$('otp'+(i+1)).focus();});
+    on('otp'+i,'keydown',function(e){if(e.key==='Backspace'&&!this.value&&i>0)$('otp'+(i-1)).focus();});
+  }
+
+  // ── FORGOT ──
+  on('do-forgot','click',()=>{
+    const email=$('f-email').value.trim();
+    if(!isEmail(email)){$('f-err').classList.add('show');return;}
+    toast('재설정 링크를 발송했어요! ✉️');setTimeout(()=>{S.view='login';render();},1400);
+  });
+  on('go-login3','click',()=>{S.view='login';render();});
+
+  // ── NAV ──
+  all('[data-tab]','click',function(){S.tab=this.dataset.tab;render();});
+
+  // ── HOME ──
+  on('open-status-modal','click',()=>{S.openModal='status';render();});
+  all('[data-nudge]','click',function(){
+    const name=this.dataset.nudge;
+    if(S.notifs.nudge) notif(`${name}님에게 조용한 찌르기 신호를 보냈습니다!`);
+    else toast(`${name}님에게 찌르기를 보냈어요 👋`);
+  });
+
+  // ── FEED INTERACTIONS ──
+  all('[data-like]','click',function(){
+    const id=this.dataset.like;
+    S.posts=S.posts.map(p=>p.id===id?{...p,likes:p.liked?p.likes-1:p.likes+1,liked:!p.liked}:p);
+    render();
+  });
+  all('[data-toggle-comments]','click',function(){
+    const id=this.dataset.toggleComments;
+    S.posts=S.posts.map(p=>p.id===id?{...p,showComments:!p.showComments}:p);render();
+  });
+  all('[data-comment]','click',function(){
+    const id=this.dataset.comment,inp=$('ci-'+id);
+    if(!inp||!inp.value.trim())return;
+    const text=inp.value.trim();
+    S.posts=S.posts.map(p=>p.id===id?{...p,comments:[...p.comments,{id:'c'+uid(),nick:S.user.nick,text}]}:p);
+    render();
+  });
+  all('.c-input','keydown',function(e){
+    if(e.key==='Enter'){
+      const id=this.id.replace('ci-',''),text=this.value.trim();if(!text)return;
+      S.posts=S.posts.map(p=>p.id===id?{...p,comments:[...p.comments,{id:'c'+uid(),nick:S.user.nick,text}]}:p);
+      render();
+    }
+  });
+  all('[data-del-comment]','click',function(){
+    const [pid,cid]=this.dataset.delComment.split('|');
+    S.posts=S.posts.map(p=>p.id===pid?{...p,comments:p.comments.filter(c=>c.id!==cid)}:p);
+    render();
+  });
+  all('[data-edit-post]','click',function(){
+    S.editingPostId=this.dataset.editPost;S.openModal='post';render();
+  });
+  all('[data-del-post]','click',function(){
+    S.posts=S.posts.filter(p=>p.id!==this.dataset.delPost);render();toast('게시글이 삭제됐어요.');
+  });
+  on('open-post-modal','click',()=>{S.openModal='post';S.postEmoji='';S.pendingImgSrc=null;S.editingPostId=null;render();});
+
+  // ── CALENDAR ──
+  on('cal-prev','click',()=>{S.calMonth--;if(S.calMonth<0){S.calMonth=11;S.calYear--;}render();});
+  on('cal-next','click',()=>{S.calMonth++;if(S.calMonth>11){S.calMonth=0;S.calYear++;}render();});
+  on('open-slot-modal','click',()=>{S.openModal='slot';render();});
+  all('[data-del-slot]','click',function(){
+    S.slots=S.slots.filter(s=>s.id!==this.dataset.delSlot);render();toast('비는 시간이 삭제됐어요.');
+  });
+
+  // ── SETTINGS ──
+  on('open-nick-modal','click',()=>{S.openModal='nick';render();});
+  on('open-invite-modal','click',()=>{S.openModal='invite';render();});
+  on('open-paywall','click',()=>{S.openModal='paywall';render();});
+  on('pw-toast','click',()=>toast('이메일로 재설정 링크를 보내드릴게요 ✉️'));
+  on('do-logout','click',()=>{S.user=null;S.view='login';S.tab='home';S.openModal=null;toast('로그아웃 됐습니다');render();});
+
+  // Notification toggles — directly update state and re-render
+  all('[data-toggle-notif]','click',function(){
+    const k=this.dataset.toggleNotif;
+    S.notifs[k]=!S.notifs[k];
+    // Toggle classes directly without full re-render for instant visual feedback
+    this.classList.toggle('on',S.notifs[k]);
+    this.classList.toggle('off',!S.notifs[k]);
+    toast(`${k==='nudge'?'찌르기':k==='feed'?'피드':'상태 변경'} 알림이 ${S.notifs[k]?'켜졌':'꺼졌'}어요.`);
+  });
+
+  // Group join
+  on('do-join-group','click',()=>{
+    const code=($('join-code-input')||{value:''}).value.toUpperCase().trim();
+    const VALID={'BTW-2026-NEW':true,'BTW-2026-SB':true,'BTW-2026-JH':true,'BTW-2026-YJ':true};
+    if(VALID[code]){toast('새 그룹에 참여했어요! 🎉');if($('join-code-input'))$('join-code-input').value='';}
+    else toast('유효하지 않은 그룹 코드예요.');
+  });
+
+  // ── MODALS ──
+  on('do-add-slot','click',()=>{
+    const date=$('sl-date').value,start=$('sl-start').value,end=$('sl-end').value;
+    if(!date||!start||!end){toast('모두 입력해 주세요');return;}
+    if(tms(start)>=tms(end)){toast('종료 시간은 시작 시간보다 늦어야 해요');return;}
+    S.slots=[...S.slots,{id:'s'+uid(),date,start,end}].sort((a,b)=>a.date!==b.date?a.date.localeCompare(b.date):tms(a.start)-tms(b.start));
+    S.openModal=null;toast('비는 시간이 추가됐어요! ⚡');render();
+  });
+
+  // Emoji picks
+  all('[data-emoji]','click',function(){
+    S.postEmoji=this.dataset.emoji===S.postEmoji?'':this.dataset.emoji;render();
+  });
+
+  // Image file upload
+  on('img-file-input','change',function(){
+    const file=this.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=function(e){
+      S.pendingImgSrc=e.target.result;
+      const prev=document.getElementById('img-preview');
+      if(prev){prev.src=e.target.result;prev.style.display='block';}
+      const area=document.getElementById('upload-area');
+      if(area){const lbl=area.querySelector('.file-upload-label');if(lbl)lbl.textContent='✅ 사진이 선택됐어요';}
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Post submit / edit
+  on('do-post','click',()=>{
+    const text=($('post-text')||{value:''}).value.trim();
+    if(!text){toast('내용을 입력해 주세요 ✍️');return;}
+    if(S.editingPostId){
+      S.posts=S.posts.map(p=>p.id===S.editingPostId?{...p,content:text}:p);
+      S.editingPostId=null;S.openModal=null;toast('게시글이 수정됐어요! ✅');
+    } else {
+      S.posts=[{
+        id:'p'+uid(),nick:S.user.nick,ab:PLI,ac:PRI,
+        content:text,imgSrc:S.pendingImgSrc||null,
+        emoji:S.pendingImgSrc?'':S.postEmoji,hasImg:!!(S.pendingImgSrc||S.postEmoji),
+        likes:0,liked:false,comments:[],ts:Date.now(),showComments:false,isOwn:true
+      },...S.posts];
+      S.openModal=null;S.postEmoji='';S.pendingImgSrc=null;toast('피드에 공유됐어요! 🎉');
+    }
+    render();
+  });
+
+  on('do-nick','click',()=>{
+    const val=($('nick-input')||{value:''}).value.trim();
+    if(val.length<2){toast('닉네임은 2자 이상이어야 해요');return;}
+    S.user={...S.user,nick:val};S.openModal=null;toast('닉네임이 변경됐어요! ✅');render();
+  });
+
+  on('copy-link','click',()=>toast('링크가 복사됐어요! 🔗'));
+  on('do-invite','click',()=>{
+    const VALID={'BTW-2026-SB':{id:'fi1',nick:'수민'},'BTW-2026-JH':{id:'fi2',nick:'정호'},'BTW-2026-YJ':{id:'fi3',nick:'유진'}};
+    const code=($('invite-code')||{value:''}).value.toUpperCase().trim();
+    if(VALID[code]){
+      const f=VALID[code];
+      if(S.friends.some(x=>x.id===f.id)){toast('이미 그룹에 있는 친구예요');return;}
+      S.friends=[...S.friends,{id:f.id,nick:f.nick,name:f.nick,bg:PLI,color:PRI,status:'active',freeSlots:[]}];
+      S.openModal=null;toast(`${f.nick}님이 그룹에 추가됐어요! 🎉`);render();
+    } else toast('유효하지 않은 친구 코드예요');
+  });
+
+  on('do-premium','click',()=>{toast('프리미엄 결제 페이지는 준비 중이에요 💜');S.openModal=null;render();});
+  all('[data-set-status]','click',function(){
+    S.status=this.dataset.setStatus;S.openModal=null;
+    toast(`상태가 "${STATUS[S.status].label}"으로 바뀌었어요! ✅`);render();
+  });
+
+  // Close modals (✕ button or backdrop)
+  all('[data-close]','click',()=>{S.openModal=null;S.editingPostId=null;render();});
+  document.querySelectorAll('.overlay').forEach(ov=>{
+    ov.addEventListener('click',function(e){if(e.target===this){S.openModal=null;S.editingPostId=null;render();}});
+  });
+}
+
+function doLogin(email){
+  const nick=email==='A@example.com'?'A':email.split('@')[0];
+  S.user={email,nick};S.view='app';render();
+}
+
+// Boot
+render();
+</script>
+</body>
+</html>
